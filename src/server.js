@@ -5,13 +5,20 @@ const cors = require('cors');
 const app = express();
 
 const corsOptions = {
-  origin: ['http://127.0.0.1:5501', 'http://localhost:5501', 'https://backend-usuarios.vercel.app'], // Allow local development and your Vercel domain
+  origin: true, // Allow all origins for development
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
+
+// Middleware to normalize URLs by removing double slashes
+app.use((req, res, next) => {
+  req.url = req.url.replace(/\/\//g, '/');
+  next();
+});
+
 app.use(express.json());
 app.use(routes)
 
