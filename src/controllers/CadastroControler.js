@@ -67,20 +67,24 @@ module.exports = {
         }
     },
 
-    async updatecadastro(req, res) {
-        const { id } = req.params; 
-        const { usu_matricula, usu_nome, usu_senha, isadm } = req.body;
+async updatecadastro(req, res) {
+  const { id } = req.params; // vem da URL
+  const { usu_nome, usu_senha, isadm } = req.body; // só o que vai mudar
 
-        const data = {
-           usu_matricula,
-            usu_nome,
-            usu_senha,
-            isadm
-        };
+  const data = {
+    usu_nome,
+    usu_senha,
+    isadm
+  };
 
-        await knex('usuario').update(data).where({ usu_matricula: id });
-        return res.status(200).send({ msg: 'Atualização efetuada com sucesso!' });
-    },
+  await knex('usuario')
+    .where({ usu_matricula: id })
+    .update(data);
+
+  return res.status(200).json({
+    msg: 'Atualização efetuada com sucesso!'
+  });
+},
 
     async deletecadastro(req, res) {
         try {
